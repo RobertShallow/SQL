@@ -1,4 +1,4 @@
-﻿use master
+use master
 if exists(select*from sysdatabases where name='TestERD') drop database TestERD
 GO
 create database TestERD
@@ -51,33 +51,31 @@ CREATE TABLE KhachHang
 CREATE TABLE TheATM
 (
   MaThe CHAR(10) NOT NULL,
+  HoTen NVARCHAR(30) NOT NULL,
   TienGDGHTrenNgay FLOAT NOT NULL,
   LoaiThe NVARCHAR(10) NOT NULL,
-  HoVaTen NVARCHAR(30) NOT NULL,
   ThoiHan DATE NOT NULL,
   MaTK CHAR(10) NOT NULL,
-  HoTen NVARCHAR(30) NOT NULL,
-  constraint THEATM_MATHE_PK PRIMARY KEY (MaThe, HoVaTen)
+  
+  constraint THEATM_MATHE_PK PRIMARY KEY (MaThe)
   
 );
 
 CREATE TABLE RutTien
 (
   MaGD CHAR(10) NOT NULL,
+  HoVaTen NVARCHAR(30) NOT NULL,
   NgayGD DATE NOT NULL,
   TongTienGDTrenNgay FLOAT NOT NULL,
   SoTienGiaoDich FLOAT NOT NULL,
   MaThe CHAR(10) NOT NULL,
-  HoVaTen NVARCHAR(30) NOT NULL,
+ 
   MaATM CHAR(10) NOT NULL,
   constraint RUTTIEN_MAGD_PK PRIMARY KEY (MaGD),
-  constraint RUTTIEN_MATHE_HOTEN_MAATM UNIQUE (MaThe, HoVaTen, MaATM)
+  constraint RUTTIEN_MATHE_HOTEN_MAATM UNIQUE (MaThe, MaATM)
 
 );
 
-
-alter table NganHang
-add constraint NH_MANH_FK FOREIGN KEY (MaNH) REFERENCES NganHang(MaNH)
 
 alter table ChiNhanh
 add constraint CHINHANH_MANH_FK FOREIGN KEY (MaNH) REFERENCES NganHang(MaNH)
@@ -90,11 +88,10 @@ add constraint TAIKHOAN_HOTEN_FK FOREIGN KEY (HoTen) REFERENCES KhachHang(HoTen)
 	constraint TAIKHOAN_MANH_FK FOREIGN KEY (MaNH) REFERENCES NganHang(MaNH)
 
 alter table TheATM
-add constraint THEATM_HOTEN_FK FOREIGN KEY (HoVaTen) REFERENCES KhachHang(HoTen),
-	constraint THEATM_MATK_HOTEN_FK FOREIGN KEY (MaTK, HoTen) REFERENCES TaiKhoan(MaTK, HoTen)
+add constraint THEATM_MATK_HOTEN_FK FOREIGN KEY (MaTK, HoTen) REFERENCES TaiKhoan(MaTK, HoTen)
 
 alter table RutTien
-add constraint RUTTIEN_MATHE_HOVATEN_FK FOREIGN KEY (MaThe, HoVaTen) REFERENCES TheATM(MaThe, HoVaTen),
+add constraint RUTTIEN_MATHE_HOVATEN_FK FOREIGN KEY (MaThe) REFERENCES TheATM(MaThe),
 	constraint RUTTIEN_MAATM_FK FOREIGN KEY (MaATM) REFERENCES TruATM(MaATM)
 
 
@@ -196,25 +193,25 @@ INSERT INTO TaiKhoan(MaTK,TenTK,HoTen,MaNH)
 				
 
 set dateformat dmy
-INSERT INTO TheATM( MaThe, HoVaTen , LoaiThe , ThoiHan , TienGDGHTrenNgay , HoTen, MaTK   )
+INSERT INTO TheATM( MaThe, HoTen, LoaiThe , ThoiHan , TienGDGHTrenNgay , MaTK   )
 				 VALUES 
-			(N'3127438291',		N'Lê Quốc Hùng',					N'Tín dụng',		'31/08/2034',		200000,		N'Lê Quốc Hùng',			'Ba467Y'),
-			(N'2910821928',		N'Lê Quốc Hùng',					N'Tín dụng',		'06/12/2026',		150000,		N'Lê Quốc Hùng',			'g1428H'),
-			(N'8162309885',		N'Lê Quốc Hùng',					N'Ghi nợ',			'01/04/2029',		50000,		N'Lê Quốc Hùng',			'Pf9102'),
-			(N'2143628099',		N'Nguyễn Quốc Cường',				N'Tín dụng',		'06/07/2030',		130000,		N'Nguyễn Quốc Cường',		'A12d4Z'),
-			(N'7277918034',		N'Đào Kim Nguyễn Thuỵ Nam',			N'Tín dụng',		'13/10/2026',		250000,		N'Đào Kim Nguyễn Thuỵ Nam',	'H32fZ8'),
+			(N'3127438291',		N'Lê Quốc Hùng',					N'Tín dụng',		'31/08/2034',		200000,					'Ba467Y'),
+			(N'2910821928',		N'Lê Quốc Hùng',					N'Tín dụng',		'06/12/2026',		150000,					'g1428H'),
+			(N'8162309885',		N'Lê Quốc Hùng',					N'Ghi nợ',			'01/04/2029',		50000,					'Pf9102'),
+			(N'2143628099',		N'Nguyễn Quốc Cường',				N'Tín dụng',		'06/07/2030',		130000,					'A12d4Z'),
+			(N'7277918034',		N'Đào Kim Nguyễn Thuỵ Nam',			N'Tín dụng',		'13/10/2026',		250000,					'H32fZ8'),
 
-			(N'0192314954',		N'Lâm Tấn Hải',						N'Tín dụng',		'12/03/2028',		230000,		N'Lâm Tấn Hải',				'ABF1423'),
-			(N'1006273488',		N'Tào Mạnh Đức',					N'Tín dụng',		'11/11/2024',		160000,		N'Tào Mạnh Đức',			'CDL0192'),
-			(N'2536148951',		N'Nguyễn Quang Tuyên',				N'Tín dụng',		'25/02/2034',		120000,		N'Nguyễn Quang Tuyên',		'MYTA086'),
+			(N'0192314954',		N'Lâm Tấn Hải',						N'Tín dụng',		'12/03/2028',		230000,					'ABF1423'),
+			(N'1006273488',		N'Tào Mạnh Đức',					N'Tín dụng',		'11/11/2024',		160000,					'CDL0192'),
+			(N'2536148951',		N'Nguyễn Quang Tuyên',				N'Tín dụng',		'25/02/2034',		120000,					'MYTA086'),
 
-			(N'7749785690',		N'Nguyễn Thành Nam',				N'Tín dụng',		'02/03/2027',		148000,		N'Nguyễn Thành Nam',		'0924381M'),
-			(N'3126433991',		N'Nguyễn Thành Nam',				N'Ghi nợ',			'03/12/2028',		70000,		N'Nguyễn Thành Nam',		'3102386O'),
+			(N'7749785690',		N'Nguyễn Thành Nam',				N'Tín dụng',		'02/03/2027',		148000,					'0924381M'),
+			(N'3126433991',		N'Nguyễn Thành Nam',				N'Ghi nợ',			'03/12/2028',		70000,					'3102386O'),
 
-			(N'4866915032',		N'Bùi Thanh Liêm',					N'Tín dụng',		'21/01/2030',		130000,		N'Bùi Thanh Liêm',			'aderw132'),
-			(N'5231098344',		N'Đỗ Thị Ngọc Anh',					N'Ghi nợ',			'26/05/2028',		50000,		N'Đỗ Thị Ngọc Anh',			'lqw9hi3j'),
+			(N'4866915032',		N'Bùi Thanh Liêm',					N'Tín dụng',		'21/01/2030',		130000,					'aderw132'),
+			(N'5231098344',		N'Đỗ Thị Ngọc Anh',					N'Ghi nợ',			'26/05/2028',		50000,					'lqw9hi3j'),
 
-			(N'9018207314',		N'Lê Quang Liêm',					N'Tín dụng',		'18/02/2034',		250000,		N'Lê Quang Liêm',			'1a4D0H6m'	)
+			(N'9018207314',		N'Lê Quang Liêm',					N'Tín dụng',		'18/02/2034',		250000,					'1a4D0H6m'	)
 	
 			
 set dateformat dmy				  
@@ -223,7 +220,7 @@ INSERT INTO RutTien(MaGD,NgayGD,SoTienGiaoDich,TongTienGDTrenNgay,MaATM,MaThe,Ho
 			('FT48664225',		'16/02/2024',		 15000,			15000,		'20318',			'7277918034',					N'Đào Kim Nguyễn Thuỵ Nam'),
 			('NP01934862',		'12/09/2023',		 2000,			2000,		'20314',			'3127438291',					N'Lê Quốc Hùng'),
 			('PK19928325',		'06/11/2023',		 4000,			4000,		'20314',			'2143628099',					N'Nguyễn Quốc Cường'),
-	
+
 			('2043778146',		'18/10/2023',		 100000,		100000,		'36714',			'1006273488',					N'Tào Mạnh Đức'),
 			('3748682119',		'03/03/2024',		 15000,			15000,		'36713',			'2536148951',					N'Nguyễn Quang Tuyên'),
 
@@ -231,7 +228,13 @@ INSERT INTO RutTien(MaGD,NgayGD,SoTienGiaoDich,TongTienGDTrenNgay,MaATM,MaThe,Ho
 			
 			('AZCB148622',		'23/01/2024',		 3000,			3000,		'78643',			'9018207314',					N'Lê Quang Liêm')
 				
-
+				select *from NganHang
+				select *from ChiNhanh
+				select *from TruATM
+				select *from TaiKhoan
+				select *from KhachHang
+				select *from TheATM
+				select *from RutTien
 
 
 
